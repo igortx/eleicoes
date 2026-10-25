@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Apuração 2º turno 2026 – Presidente</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f3f2;--sf:#fff;--ink:#14201d;--mut:#5c6b67;--ln:#d6dcda;--a:#c8102e;--b:#3b4046;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1413;--sf:#172120;--ink:#e8efed;--mut:#9aaaa6;--ln:#2a3836;--a:#e0364f;--b:#6f7880}}
+:root[data-theme="dark"]{--bg:#0d1413;--sf:#172120;--ink:#e8efed;--mut:#9aaaa6;--ln:#2a3836;--a:#e0364f;--b:#6f7880}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 40px}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}
+h1{font-size:clamp(1.5rem,4vw,2.3rem);font-weight:800;margin:0;letter-spacing:-.02em;line-height:1.05}
+.sub{color:var(--mut);margin:4px 0 0;font-size:.95rem}
+.chip{padding:6px 12px;border-radius:99px;font-size:.85rem;font-weight:600;border:1.5px solid var(--ln);background:var(--sf)}
+.chip.fake{border-color:#d98a1f;background:color-mix(in srgb,#d98a1f 18%,var(--sf))}
+.prog{margin:0 0 18px}
+.prog .t{display:flex;justify-content:space-between;font-size:.9rem;color:var(--mut);margin-bottom:6px}
+.prog .t b{color:var(--ink)}
+.track{height:10px;background:var(--ln);border-radius:6px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--ink);width:0;transition:width .5s}
+.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:16px}
+h2{font-size:1.05rem;margin:0 0 12px;font-weight:600}
+svg{display:block;width:100%;height:auto}
+.st{stroke:var(--sf);stroke-width:1.5;stroke-linejoin:round;cursor:pointer;transition:fill .4s}
+.st:focus-visible,.st.sel{stroke:var(--ink);stroke-width:3}
+.lb{pointer-events:none;font-family:inherit;text-anchor:middle}
+.lb .u{font-size:15px;font-weight:800}
+.lb .p{font-size:12px;font-weight:600}
+.legend{display:flex;gap:6px 18px;flex-wrap:wrap;margin-top:10px;font-size:.85rem;color:var(--mut)}
+.sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.side{display:grid;gap:16px}
+.duel{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px}
+.cand{min-width:0}.cand.r{text-align:right}
+.cand .n{font-size:.9rem;color:var(--mut)}
+.cand .p{font-size:clamp(1.7rem,5vw,2.4rem);font-weight:800;letter-spacing:-.02em;line-height:1}
+.cand .v{font-size:.85rem;color:var(--mut)}
+.bar{position:relative;height:14px;border-radius:7px;overflow:hidden;display:flex;background:var(--ln)}
+.bar i{display:block;height:100%;transition:width .5s}
+.bar::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--sf)}
+.row{display:flex;justify-content:space-between;font-size:.9rem;padding:6px 0;border-bottom:1px solid var(--ln)}
+.row:last-child{border:0}
+.ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:20px;font-size:.9rem}
+button.b{font:inherit;font-weight:600;padding:8px 14px;border-radius:8px;border:1.5px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer}
+button.b:focus-visible,input[type=range]:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+input[type=range]{flex:1;min-width:140px}
+.note{font-size:.8rem;color:var(--mut);margin-top:16px}
+@media(prefers-reduced-motion:reduce){.track i,.bar i,.st{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div><h1>Presidente · 2º turno 2026</h1><p class="sub">Votos válidos por estado e no exterior</p></div>
+  <span class="chip fake" id="status">Dados fictícios de teste</span>
+</header>
+<div class="prog"><div class="t"><span>Urnas apuradas no país</span><b id="pg">0%</b></div><div class="track"><i id="pgbar"></i></div></div>
+
+<div class="grid">
+  <section class="card">
+    <h2>Mapa por estado</h2>
+    <svg id="map" viewBox="0 0 815 744" role="group" aria-label="Mapa do Brasil por estado"></svg>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--a)"></i>Lula na frente</span>
+      <span><i class="sw" style="background:var(--b)"></i>Flávio Bolsonaro na frente</span>
+      <span>Cor mais forte = vantagem maior</span>
+      <span>Número = urnas apuradas · barrinha = divisão dos votos</span>
+    </div>
+  </section>
+  <div class="side">
+    <section class="card"><h2>Brasil</h2><div id="nac"></div></section>
+    <section class="card"><h2>Exterior</h2><div id="ext"></div></section>
+    <section class="card"><h2 id="dtitle">Estado</h2><div id="det"></div></section>
+  </div>
+</div>
+
+<div class="ctl card" id="simctl">
+  <button class="b" id="play">Simular apuração</button>
+  <input type="range" id="rng" min="0" max="100" value="0" aria-label="Progresso da apuração simulada">
+  <span id="rv">0%</span>
+</div>
+<p class="note" id="note">Os números desta prévia são sorteados só para mostrar o visual. Não representam resultado real.</p>
+</div>
+
+<script>
+const CAND={a:{n:"Lula",num:"13"},b:{n:"Flávio Bolsonaro",num:"22"}};
+const GEO={"AC":{"d":"M7,239L25,247L67,257L135,291L128,298L121,300L115,306L109,305L106,311L100,314L84,310L75,310L68,313L62,312L62,289L64,282L51,292L33,293L34,289L30,283L14,281L20,273L13,266L13,264L9,261L4,253L6,250L0,246L1,242L6,241L4,238L7,239Z","c":[65,279],"a":4375},"AL":{"d":"M707,270L712,273L690,302L679,292L656,280L665,271L680,281L681,279L686,280L693,277L696,272L707,270Z","c":[686,283],"a":797},"AM":{"d":"M122,64L127,70L127,80L131,79L141,88L154,83L155,90L159,85L162,85L163,81L169,78L170,79L176,74L177,77L182,72L184,65L195,61L199,61L207,66L205,72L212,84L210,93L217,109L215,115L211,117L220,124L222,129L230,133L227,129L228,120L235,112L240,113L245,120L251,116L250,112L256,98L277,98L278,109L288,124L291,126L293,124L294,129L305,135L309,135L317,141L318,145L329,141L322,149L289,226L285,230L291,242L287,252L288,257L286,269L228,270L226,268L221,271L205,254L190,254L188,261L185,261L185,266L181,268L181,273L168,273L163,282L161,278L151,285L147,281L139,281L138,286L132,289L67,257L25,247L4,238L7,231L16,226L14,217L19,210L22,200L39,188L56,186L61,181L67,181L70,186L74,184L85,124L80,117L80,112L72,106L73,92L83,89L85,91L90,90L87,82L76,82L76,70L107,70L106,65L111,68L121,60L122,64Z","c":[171,182],"a":44666},"AP":{"d":"M419,26L428,62L432,61L436,68L442,70L442,80L439,89L433,91L428,99L418,105L410,118L409,123L402,126L396,123L394,114L387,105L382,95L383,90L378,85L378,79L365,74L361,70L353,69L351,56L354,56L359,61L368,60L371,57L386,61L394,55L398,42L410,26L412,19L419,26Z","c":[404,75],"a":4048},"BA":{"d":"M637,265L638,268L646,270L648,273L651,270L652,274L655,274L657,282L661,283L661,291L664,293L666,299L663,301L664,306L657,306L656,310L664,321L673,320L660,343L654,349L649,348L643,355L644,362L642,364L641,382L645,404L638,429L640,439L630,451L620,444L620,440L613,433L615,423L619,424L619,417L621,418L627,409L620,403L614,403L609,400L600,402L599,397L591,390L586,391L566,381L559,384L553,381L555,375L547,373L512,393L515,387L514,377L516,375L509,370L509,358L513,355L508,355L508,351L512,348L508,349L509,342L511,340L507,337L507,331L511,329L507,328L508,324L512,324L505,321L503,317L510,305L517,301L521,295L528,308L533,310L540,305L548,305L557,293L553,284L560,279L564,282L569,281L573,285L583,279L590,278L599,268L604,268L612,277L610,282L613,283L618,280L619,275L625,275L630,267L637,265Z","c":[592,340],"a":16383},"CE":{"d":"M624,157L652,173L674,194L667,196L658,216L650,222L649,231L647,235L651,241L643,252L641,252L630,241L614,243L617,232L611,229L607,217L607,201L601,195L604,182L601,179L601,173L598,167L601,161L600,158L624,157Z","c":[631,199],"a":4233},"ES":{"d":"M611,499L606,507L592,504L593,499L590,497L590,490L592,487L599,486L607,473L605,463L601,461L607,460L603,450L605,448L610,448L608,444L611,445L614,443L630,451L630,469L616,495L611,499Z","c":[612,475],"a":1383},"GO":{"d":"M438,338L435,347L452,355L457,346L459,349L462,346L466,351L466,356L468,352L469,355L474,352L474,355L480,356L483,358L484,352L488,355L500,349L506,349L506,346L507,349L512,348L508,351L509,356L513,355L509,358L509,370L516,375L512,386L509,386L505,382L505,389L497,389L499,394L496,398L499,404L490,407L488,397L474,397L472,408L490,408L487,416L493,425L486,434L491,437L489,441L490,446L478,454L472,451L460,450L452,457L449,454L435,458L431,465L425,469L425,473L396,458L387,457L386,455L390,451L384,450L384,444L381,436L385,423L392,417L391,412L399,405L406,403L412,389L421,386L425,370L424,364L429,355L432,344L438,338Z","c":[447,407],"a":10018},"MA":{"d":"M495,273L499,262L504,261L505,256L503,253L495,256L485,244L486,241L482,239L486,235L489,222L486,208L479,203L470,201L463,204L484,189L494,176L495,170L503,157L502,154L506,151L506,145L509,143L510,137L508,136L511,134L511,126L515,122L515,126L517,122L516,127L520,124L519,129L522,126L523,129L525,127L524,132L526,128L526,136L530,128L531,131L536,130L534,133L539,133L536,137L540,136L545,150L550,148L549,149L551,151L558,145L560,148L566,148L578,154L591,154L588,163L584,168L578,168L569,183L572,188L570,194L573,201L567,210L568,218L572,223L570,229L561,233L556,230L550,231L538,243L524,248L514,272L518,283L515,298L507,296L502,287L504,283L500,281L495,273Z","c":[527,199],"a":9434},"MG":{"d":"M547,373L555,375L553,381L559,384L566,381L586,391L591,390L599,397L600,402L611,400L626,407L626,412L619,417L619,424L615,423L613,433L621,442L620,444L608,444L610,448L605,448L603,450L607,460L601,461L605,463L607,472L599,486L592,487L590,489L591,495L588,500L585,501L586,502L581,513L582,515L568,522L555,522L525,533L519,532L518,537L508,538L508,535L505,534L506,531L501,526L505,511L502,508L495,510L491,499L494,495L490,491L491,486L487,482L480,482L479,485L473,483L473,485L462,486L461,491L459,486L455,488L454,482L449,481L432,478L422,484L421,477L435,458L449,454L452,457L460,450L472,451L478,454L490,446L489,441L491,437L486,433L493,425L487,415L490,407L499,404L496,398L499,394L497,389L505,389L505,382L509,386L514,386L512,393L540,375L547,373Z","c":[538,453],"a":17503},"MS":{"d":"M369,443L384,445L384,451L390,451L386,455L387,457L394,457L421,470L424,474L421,477L422,484L411,495L411,500L406,504L406,508L396,523L374,539L372,546L367,548L365,558L362,560L355,555L342,558L339,551L337,533L333,526L327,526L323,522L315,526L294,522L297,501L291,486L296,482L291,478L299,464L298,462L302,449L304,449L297,436L304,443L311,439L317,431L322,432L328,429L346,438L356,434L362,438L366,437L372,430L372,438L369,440L369,443Z","c":[352,489],"a":10775},"MT":{"d":"M250,355L255,348L256,342L261,337L255,328L255,323L258,319L257,314L251,314L249,311L228,311L230,301L228,296L230,286L227,279L230,272L228,270L286,270L288,257L287,252L291,242L300,259L301,269L308,272L316,281L436,290L429,305L427,320L429,339L428,342L431,347L424,364L425,370L421,386L412,389L406,403L399,405L391,412L392,417L385,423L381,431L381,439L384,445L368,443L372,438L372,430L366,437L361,438L356,434L346,438L328,429L322,432L317,431L311,439L304,443L299,436L293,435L286,429L285,420L288,412L254,412L253,397L247,390L252,389L252,380L248,372L250,368L244,363L250,358L250,355Z","c":[332,349],"a":26263},"PA":{"d":"M496,117L496,119L498,117L500,120L502,118L501,121L506,119L506,123L508,123L510,120L509,125L513,122L511,134L508,136L510,137L509,143L506,145L506,151L502,154L503,157L495,170L494,176L485,188L463,204L470,205L475,209L472,212L473,216L469,220L470,224L466,225L465,229L455,234L455,240L452,246L456,251L455,258L448,271L440,279L436,290L317,281L308,272L301,269L300,259L285,230L289,226L322,149L329,141L318,145L317,141L309,135L305,135L294,129L293,124L291,126L286,122L278,109L277,79L285,78L284,75L288,72L294,74L294,71L302,70L306,65L310,64L316,67L322,65L331,68L332,64L328,60L331,55L342,57L350,54L353,61L353,69L361,70L365,74L378,79L378,85L383,90L382,95L387,105L394,114L396,123L402,126L409,123L410,118L418,105L428,99L432,91L438,89L439,96L446,96L452,102L460,107L470,107L469,112L477,116L483,113L487,117L487,114L493,115L492,117L494,115L494,118L496,117Z","c":[384,178],"a":35477},"PB":{"d":"M675,217L676,219L672,223L670,230L674,230L675,232L682,230L684,235L688,232L688,225L690,222L698,226L716,226L719,246L714,243L707,244L706,248L690,251L686,257L679,260L676,254L673,254L676,250L676,247L679,245L675,241L659,251L655,251L654,248L650,250L648,247L651,241L647,235L649,231L650,224L652,223L659,227L665,220L675,217Z","c":[682,238],"a":1612},"PE":{"d":"M676,241L679,245L676,247L676,250L673,254L676,254L679,260L686,257L690,251L706,248L707,244L714,243L719,246L719,255L713,272L699,271L695,273L693,277L686,280L681,279L680,281L665,271L656,280L652,271L649,273L635,265L626,270L625,275L619,275L618,280L613,283L610,282L612,277L607,270L599,268L613,257L614,251L611,245L614,243L630,241L641,252L648,247L650,250L654,248L655,251L659,251L670,243L676,241Z","c":[661,261],"a":2813},"PI":{"d":"M592,156L601,160L598,167L601,173L601,179L604,182L601,195L607,201L607,217L611,229L617,232L614,243L611,245L614,251L613,257L599,268L590,278L583,279L573,285L569,281L564,282L560,279L553,284L557,293L548,305L540,305L533,310L528,308L522,295L518,298L515,297L518,283L514,272L518,266L523,250L526,247L538,243L550,231L556,230L561,233L570,229L572,223L568,218L567,210L573,201L570,194L572,188L569,183L578,168L584,168L591,160L590,155L592,156Z","c":[570,243],"a":7187},"PR":{"d":"M403,531L417,533L427,539L441,538L445,542L448,548L448,556L455,565L453,571L466,571L467,579L473,577L474,581L477,582L466,596L456,597L449,601L442,597L435,599L430,597L427,601L418,603L418,608L415,610L413,608L406,608L400,605L375,602L370,596L369,589L365,589L365,587L359,591L356,589L362,565L361,561L365,558L367,548L372,546L374,539L386,531L400,533L403,531Z","c":[411,571],"a":6198},"RJ":{"d":"M541,545L537,547L535,544L536,540L546,536L548,533L539,532L536,528L555,522L568,522L582,515L581,513L586,502L585,501L590,497L593,499L592,504L606,507L604,511L606,521L588,531L588,534L590,535L587,540L568,539L567,533L564,536L566,539L559,541L554,538L547,541L543,538L538,541L538,544L541,545Z","c":[575,524],"a":1326},"RN":{"d":"M676,196L685,199L698,198L707,201L711,207L716,226L698,226L690,222L688,225L688,232L684,235L682,230L675,232L674,230L670,230L676,218L665,220L659,227L650,223L652,218L658,214L667,196L674,194L676,196Z","c":[685,214],"a":1503},"RO":{"d":"M138,290L132,289L138,286L139,281L147,281L151,285L161,278L163,282L168,273L181,273L181,269L185,266L185,261L188,261L190,254L204,254L211,262L214,262L218,270L222,271L226,268L230,272L227,279L230,286L228,296L230,301L228,311L249,311L251,314L257,314L258,319L255,323L255,328L261,337L256,342L250,358L244,363L238,359L223,360L217,352L206,350L199,342L196,344L187,339L178,340L171,332L165,330L164,325L160,325L159,316L161,311L157,302L160,297L158,287L155,290L151,288L138,290Z","c":[205,310],"a":6852},"RR":{"d":"M258,43L257,52L259,58L262,59L262,67L271,76L277,79L277,98L256,98L250,112L251,116L247,119L243,119L237,112L231,115L227,127L230,133L222,129L220,124L211,117L215,115L217,109L210,93L212,82L205,72L207,66L195,61L194,56L183,55L184,50L179,43L180,35L168,22L173,25L181,24L184,29L189,28L189,26L193,30L194,27L198,28L203,34L207,32L207,26L210,26L212,23L222,25L228,22L233,16L239,17L246,9L244,3L253,2L257,8L254,17L263,20L262,23L266,28L259,35L258,43Z","c":[231,63],"a":6361},"RS":{"d":"M403,703L399,708L402,714L392,732L378,744L376,741L378,733L381,732L383,726L390,727L393,721L391,717L392,713L384,723L378,722L374,718L372,712L365,709L356,700L344,697L338,688L330,693L330,688L316,675L311,674L308,678L300,676L323,655L333,641L336,643L335,639L348,632L352,626L362,624L369,618L374,620L379,617L380,620L385,617L386,620L401,621L406,625L411,625L421,631L429,642L445,643L446,646L442,648L441,655L437,658L446,660L426,694L402,714L402,707L406,708L414,703L414,701L418,700L419,693L428,687L427,680L429,679L430,682L430,676L423,681L417,673L417,678L420,680L417,681L417,687L415,685L414,693L411,694L411,697L405,697L403,703Z","c":[380,667],"a":8741},"SC":{"d":"M372,607L374,601L380,601L384,604L390,603L406,608L413,608L415,610L418,608L418,603L427,601L430,597L435,599L442,597L449,601L456,597L465,596L468,601L465,610L466,618L469,618L466,620L467,633L464,644L446,660L441,657L438,659L439,660L438,657L441,656L442,648L446,646L445,643L429,642L421,631L411,625L406,625L401,621L386,620L385,617L380,620L379,617L376,619L370,619L373,614L372,607Z","c":[432,620],"a":3017},"SE":{"d":"M661,284L679,292L690,302L682,307L670,322L661,319L661,315L656,309L657,306L664,306L663,301L666,299L664,293L661,291L661,284Z","c":[671,303],"a":631},"SP":{"d":"M511,556L511,558L507,558L497,564L475,584L477,582L474,581L473,577L466,579L466,571L453,571L455,565L448,556L446,543L441,538L427,539L417,533L402,530L400,533L383,532L396,523L406,508L406,504L411,500L411,495L430,479L454,482L454,488L459,486L461,491L462,486L473,485L473,483L479,485L480,482L487,482L491,487L490,491L494,495L491,499L495,510L502,508L505,511L501,526L506,531L505,534L508,535L507,538L518,537L519,532L525,533L536,528L539,532L548,533L546,536L536,539L534,544L537,547L534,546L525,551L525,555L517,554L511,556Z","c":[464,526],"a":7574},"TO":{"d":"M495,273L500,281L504,283L502,287L507,296L518,298L519,296L517,301L510,305L503,317L505,321L512,323L508,324L507,328L511,329L507,331L507,337L511,340L509,342L508,349L512,348L507,349L506,346L506,349L500,349L488,355L484,352L483,358L480,356L474,355L474,352L469,355L468,352L466,356L466,351L461,346L459,349L457,346L454,347L452,355L435,347L438,338L431,347L429,346L427,320L429,305L440,279L454,262L456,251L452,246L455,240L455,234L465,229L468,223L470,224L469,220L473,216L472,212L475,210L470,205L463,204L470,201L479,203L486,208L489,222L486,235L482,239L486,241L485,244L495,256L503,253L505,256L504,261L499,262L495,273Z","c":[471,296],"a":7991},"DF":{"d":"M490,407L472,408L474,397L488,397L490,407Z","c":[481,402],"a":170}};
+// estados pequenos: rótulo na coluna do oceano [y]
+const OUT={RN:195,PB:237,PE:279,AL:321,SE:363,DF:405,ES:470,RJ:520};
+const W={SP:34,MG:16,RJ:12.5,BA:11,RS:8.5,PR:8.5,PE:7,CE:6.8,PA:6,SC:5.5,GO:5,MA:5,PB:3.1,ES:3,AM:2.8,MT:2.7,RN:2.5,PI:2.5,AL:2.3,DF:2.2,MS:2.1,SE:1.7,RO:1.2,TO:1.1,AC:.6,AP:.6,RR:.4,ZZ:.5};
+const LIVE=/vercel\.app$|localhost|127\.0\.0\.1/.test(location.hostname)||location.search.includes("live");
+const REFRESH_MS=30000;
+const fmt=(n,d=0)=>n.toLocaleString("pt-BR",{maximumFractionDigits:d,minimumFractionDigits:d});
+const $=id=>document.getElementById(id);
+const NS="http://www.w3.org/2000/svg";
+let S={},P=0,SEL="SP";
+
+// ===== dados de teste =====
+function rng(s){return()=>{s=(s*1664525+1013904223)%4294967296;return s/4294967296}}
+const R=rng(2026),FIN={},NZ={},DL={};
+for(const u in W){FIN[u]={valid:W[u]*780000,pa:32+R()*38};NZ[u]=(R()-.5)*8;DL[u]=R()}
+function mock(p){const o={};for(const u in FIN){const q=Math.min(1,Math.max(0,p*1.25-DL[u]*.25)),v=FIN[u].valid*q,pa=FIN[u].pa+NZ[u]*(1-q);o[u]={a:v*pa/100,b:v*(100-pa)/100,q}}return o}
+
+// ===== dados reais (TSE via /api/tse) =====
+// AJUSTAR parse() depois de abrir um arquivo real do TSE: os nomes dos campos podem variar.
+function parse(j){
+  const r=(j.abr&&j.abr[0])||j,c=r.cand||j.cand||[];
+  const g=n=>{const x=c.find(y=>String(y.n)===n);return x?parseInt(String(x.vap).replace(/\D/g,""),10)||0:0};
+  return{a:g(CAND.a.num),b:g(CAND.b.num),q:(parseFloat(String(r.pst||j.pst||"0").replace(",","."))||0)/100};
+}
+async function loadLive(){
+  const out={};
+  await Promise.all([...Object.keys(GEO),"ZZ"].map(async u=>{
+    try{const r=await fetch("/api/tse?uf="+u.toLowerCase());if(!r.ok)throw 0;out[u]=parse(await r.json())}
+    catch(e){out[u]=S[u]||{a:0,b:0,q:0}}
+  }));
+  try{const r=await fetch("/api/tse?uf=br");if(r.ok)P=parse(await r.json()).q}catch(e){}
+  return out;
+}
+
+// ===== desenho =====
+const tot=d=>d.a+d.b;
+function el(n,at,p){const e=document.createElementNS(NS,n);for(const k in at)e.setAttribute(k,at[k]);if(p)p.appendChild(e);return e}
+function label(g,u,x,y,d,fg){
+  const t=tot(d),pa=t?d.a/t:.5,L=el("g",{class:"lb",fill:fg},g);
+  el("text",{class:"u",x,y:y-4},L).textContent=u;
+  el("text",{class:"p",x,y:y+10},L).textContent=d.q?fmt(d.q*100,0)+"%":"–";
+  if(t){el("rect",{x:x-17,y:y+15,width:34,height:6,rx:2,fill:"#fff",opacity:.92},L);
+    el("rect",{x:x-16,y:y+16,width:32*pa,height:4,fill:"#c8102e"},L);
+    el("rect",{x:x-16+32*pa,y:y+16,width:32*(1-pa),height:4,fill:"#3b4046"},L)}
+}
+function render(){
+  const m=$("map");m.innerHTML="";
+  const g1=el("g",{},m),g2=el("g",{},m);
+  for(const u in GEO){
+    const d=S[u]||{a:0,b:0,q:0},t=tot(d),pa=t?d.a/t*100:50,lead=pa>=50?"a":"b";
+    const mix=t?Math.round(40+Math.min(1,Math.abs(pa-50)/20)*60):0;
+    const p=el("path",{d:GEO[u].d,class:"st"+(u===SEL?" sel":""),tabindex:0,role:"button",
+      fill:t?`color-mix(in srgb,var(--${lead}) ${mix}%,var(--sf))`:"var(--bg)",
+      "aria-label":u+(t?`: ${fmt(pa,1)}% ${CAND.a.n}, ${fmt(100-pa,1)}% ${CAND.b.n}, ${fmt(d.q*100,0)}% apurado`:": sem votos apurados")},g1);
+    p.onclick=()=>{SEL=u;render()};p.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();SEL=u;render()}};
+    const fg=!t?"var(--mut)":mix>=62?"#fff":"var(--ink)";
+    if(u in OUT){
+      const y=OUT[u],[cx,cy]=GEO[u].c;
+      el("path",{d:`M${cx},${cy}L742,${y}`,stroke:"var(--mut)","stroke-width":1,fill:"none"},g2);
+      label(g2,u,775,y,d,"var(--ink)");
+    }else label(g2,u,GEO[u].c[0],GEO[u].c[1],d,fg);
+  }
+  const n={a:0,b:0};for(const u in S){n.a+=S[u].a;n.b+=S[u].b}
+  $("nac").innerHTML=duel(n);
+  $("ext").innerHTML=duel(S.ZZ||{a:0,b:0})+row("Urnas apuradas",fmt((S.ZZ?S.ZZ.q:0)*100,1)+"%");
+  const d=S[SEL]||{a:0,b:0,q:0};
+  $("dtitle").textContent=SEL;
+  $("det").innerHTML=duel(d)+row("Urnas apuradas",fmt(d.q*100,1)+"%")+row("Votos válidos",fmt(tot(d)));
+  $("pg").textContent=fmt(P*100,1)+"%";$("pgbar").style.width=P*100+"%";$("rv").textContent=fmt(P*100,0)+"%";
+}
+const row=(a,b)=>`<div class="row"><span>${a}</span><b>${b}</b></div>`;
+function duel(d){
+  const t=tot(d),pa=t?d.a/t*100:50,pb=100-pa;
+  return `<div class="duel">
+  <div class="cand"><div class="n"><i class="sw" style="background:var(--a)"></i>${CAND.a.n}</div><div class="p">${t?fmt(pa,2):"–"}%</div><div class="v">${fmt(d.a)} votos</div></div>
+  <div class="cand r"><div class="n">${CAND.b.n}<i class="sw" style="background:var(--b);margin:0 0 0 6px"></i></div><div class="p">${t?fmt(pb,2):"–"}%</div><div class="v">${fmt(d.b)} votos</div></div></div>
+  <div class="bar" role="img" aria-label="${CAND.a.n} ${fmt(pa,1)}%, ${CAND.b.n} ${fmt(pb,1)}%"><i style="width:${pa}%;background:var(--a)"></i><i style="width:${pb}%;background:var(--b)"></i></div>`;
+}
+
+// ===== início =====
+async function tick(){S=await loadLive();render();$("status").textContent="Fonte: TSE · parcial · "+new Date().toLocaleTimeString("pt-BR")}
+if(LIVE){
+  $("status").classList.remove("fake");$("simctl").style.display="none";
+  $("note").textContent="Números parciais, atualizados a cada 30 segundos a partir dos arquivos do TSE. Podem mudar ao longo da apuração.";
+  tick();setInterval(tick,REFRESH_MS);
+}else{
+  let timer=null;
+  const set=v=>{P=v/100;S=mock(P);$("rng").value=v;render()};
+  const stop=()=>{clearInterval(timer);timer=null;$("play").textContent="Simular apuração"};
+  $("rng").oninput=e=>{stop();set(+e.target.value)};
+  $("play").onclick=()=>{
+    if(timer)return stop();
+    if(+$("rng").value>=100)set(0);
+    $("play").textContent="Pausar";
+    timer=setInterval(()=>{const v=+$("rng").value+1;set(v);if(v>=100)stop()},180);
+  };
+  set(55);
+}
+</script>
+</body>
+</html>
