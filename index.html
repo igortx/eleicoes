@@ -135,7 +135,7 @@ function el(n,at,p){const e=document.createElementNS(NS,n);for(const k in at)e.s
 function label(g,u,x,y,d,fg){
   const t=tot(d),pa=t?d.a/t:.5,L=el("g",{class:"lb",fill:fg},g);
   el("text",{class:"u",x,y:y-4},L).textContent=u;
-  el("text",{class:"p",x,y:y+10},L).textContent=d.q?fmt(d.q*100,0)+"%":"–";
+  el("text",{class:"p",x,y:y+10},L).textContent=d.q?fmt(d.q*100,d.q<.1?1:0)+"%":"–";
   if(t){el("rect",{x:x-17,y:y+15,width:34,height:6,rx:2,fill:"#fff",opacity:.92},L);
     el("rect",{x:x-16,y:y+16,width:32*pa,height:4,fill:"#c8102e"},L);
     el("rect",{x:x-16+32*pa,y:y+16,width:32*(1-pa),height:4,fill:"#3b4046"},L)}
